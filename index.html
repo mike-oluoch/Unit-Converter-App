@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unit Converter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="wrapper">
+  <header>
+    <div class="label-tag">v1.0</div>
+    <h1>Unit<span>.</span><br>Converter</h1>
+    <p class="subtitle">// weight · length · temperature</p>
+  </header>
+
+  <!-- Category tabs -->
+  <div class="category-tabs">
+    <button class="tab-btn active" data-cat="weight" onclick="switchCategory('weight')"><span>⚖ Weight</span></button>
+    <button class="tab-btn" data-cat="length" onclick="switchCategory('length')"><span>📐 Length</span></button>
+    <button class="tab-btn" data-cat="temperature" onclick="switchCategory('temperature')"><span>🌡 Temp</span></button>
+  </div>
+
+  <!-- Main card -->
+  <div class="card">
+    <div class="converter-grid">
+
+      <!-- From -->
+      <div class="field-group">
+        <label>From value</label>
+        <input type="number" id="fromValue" placeholder="0" step="any" oninput="clearResult()" />
+        <select id="fromUnit" onchange="updateQuickRef()"></select>
+      </div>
+
+      <!-- Swap -->
+      <div class="swap-col">
+        <button class="swap-btn" onclick="swapUnits()" title="Swap units">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- To -->
+      <div class="field-group">
+        <label>To unit</label>
+        <div class="spacer"></div>
+        <select id="toUnit" onchange="updateQuickRef()"></select>
+      </div>
+
+    </div>
+
+    <p class="error-msg" id="errorMsg"></p>
+
+    <button class="convert-btn" onclick="convert()">→ Convert</button>
+
+    <!-- Result -->
+    <div class="result-panel" id="resultPanel">
+      <div class="result-left">
+        <div class="result-label">Result</div>
+        <div class="result-value" id="resultValue">—</div>
+        <div class="result-unit" id="resultUnit"></div>
+      </div>
+      <button class="copy-btn" id="copyBtn" onclick="copyResult()">COPY</button>
+    </div>
+
+    <!-- Quick ref -->
+    <div class="quick-ref">
+      <div class="quick-ref-title">// Quick conversions</div>
+      <div class="ref-chips" id="refChips"></div>
+    </div>
+  </div>
+
+  <footer>built with precision · no dependencies</footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

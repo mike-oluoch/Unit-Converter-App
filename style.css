@@ -1,0 +1,456 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── CSS Variables ─────────────────────────────────────────── */
+:root {
+  --bg: #0d0d0d;
+  --surface: #161616;
+  --surface2: #1e1e1e;
+  --border: #2a2a2a;
+  --accent: #c8f542;
+  --accent-dim: #a8d930;
+  --text: #f0f0f0;
+  --muted: #666;
+  --result-bg: #111;
+}
+
+/* ── Base ──────────────────────────────────────────────────── */
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Background grid */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(200, 245, 66, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 245, 66, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 780px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Header ────────────────────────────────────────────────── */
+header {
+  margin-bottom: 2.5rem;
+}
+
+.label-tag {
+  display: inline-block;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 2px 10px;
+  border-radius: 2px;
+  margin-bottom: 0.75rem;
+}
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+h1 span {
+  color: var(--accent);
+}
+
+.subtitle {
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+}
+
+/* ── Category Tabs ─────────────────────────────────────────── */
+.category-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tab-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: translateY(100%);
+  transition: transform 0.2s ease;
+  z-index: 0;
+}
+
+.tab-btn span {
+  position: relative;
+  z-index: 1;
+}
+
+.tab-btn:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.tab-btn:hover::before {
+  transform: translateY(70%);
+}
+
+.tab-btn.active {
+  border-color: var(--accent);
+  color: var(--bg);
+}
+
+.tab-btn.active::before {
+  transform: translateY(0);
+}
+
+/* ── Card ──────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2rem;
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+/* ── Converter Grid ────────────────────────────────────────── */
+.converter-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 1rem;
+  align-items: end;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 580px) {
+  .converter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .swap-col {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+/* Spacer to align the "To" select with the "From" select (below the number input) */
+.spacer {
+  height: 68px; /* matches input height: font 1.4rem + padding 0.75rem*2 + border 2px */
+}
+
+/* ── Form Elements ─────────────────────────────────────────── */
+label {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+input[type="number"] {
+  width: 100%;
+  background: var(--result-bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-size: 1.4rem;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.2s;
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type="number"]:focus {
+  border-color: var(--accent);
+}
+
+select {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 2.2rem;
+}
+
+select:focus {
+  border-color: var(--accent);
+}
+
+/* ── Swap Button ───────────────────────────────────────────── */
+.swap-col {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 0;
+}
+
+.swap-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+  margin-bottom: 2px;
+}
+
+.swap-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: rotate(180deg);
+}
+
+.swap-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ── Convert Button ────────────────────────────────────────── */
+.convert-btn {
+  width: 100%;
+  background: var(--accent);
+  color: var(--bg);
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.convert-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.convert-btn:hover {
+  background: var(--accent-dim);
+  transform: translateY(-1px);
+}
+
+.convert-btn:hover::after {
+  transform: translateX(100%);
+}
+
+.convert-btn:active {
+  transform: translateY(0);
+}
+
+/* ── Error Message ─────────────────────────────────────────── */
+.error-msg {
+  font-size: 0.75rem;
+  color: #ff6b6b;
+  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+  min-height: 1em;
+  letter-spacing: 0.03em;
+}
+
+/* ── Result Panel ──────────────────────────────────────────── */
+.result-panel {
+  margin-top: 1.5rem;
+  background: var(--result-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 72px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.result-panel.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.result-left {
+  flex: 1;
+}
+
+.result-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.3rem;
+}
+
+.result-value {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+  word-break: break-all;
+}
+
+.result-unit {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 0.2rem;
+}
+
+.copy-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  padding: 0.4rem 0.8rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.copy-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── Quick Reference ───────────────────────────────────────── */
+.quick-ref {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1.25rem;
+}
+
+.quick-ref-title {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+
+.ref-chips {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ref-chip {
+  font-size: 0.65rem;
+  color: var(--muted);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 3px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  letter-spacing: 0.02em;
+  font-family: 'DM Mono', monospace;
+}
+
+.ref-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── Footer ────────────────────────────────────────────────── */
+footer {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
